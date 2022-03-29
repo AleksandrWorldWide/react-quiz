@@ -4,6 +4,7 @@ import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
 import Select from '../../components/UI/Select/Select'
 import {createControl, validate, validateForm} from '../../form/formFramework'
+import axios from '../../axios/axios-quiz'
 
 
 function createOptionControl(count) {
@@ -69,9 +70,22 @@ class QuizCreator extends React.Component {
 			formControls: createFormControls()
 		})
 	}
-	createQuizHandler = () => {
-
+	createQuizHandler = async () => {
+		try {
+			await axios.post('/quizes.json', this.state.quiz)
+			this.setState({
+				quiz: [],
+				isFormValid: false,
+				rightAnswerId: 1,
+				formControls: createFormControls()
+			})
+		}
+		catch (e) {
+			console.log(e)
+		}
+		
 	}
+
 	changeHandler(value, ctrl) {
 		const formControls = this.state.formControls
 		const control = formControls[ctrl]
